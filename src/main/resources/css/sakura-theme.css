@@ -1,0 +1,84 @@
+/* =========================================
+   樱花主题 - 所有字体黑色，半透背景，控件宽度足够
+   ========================================= */
+
+.root {
+    -fx-base: #ffe4e1;
+    -fx-background: #fff0f0;
+    -fx-text-background-color: #1a1a1a;   /* 纯黑 */
+    -fx-control-inner-background: rgba(255, 248, 250, 0.85);
+    -fx-font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* 所有控件文字黑色 */
+.label, .text, .text-field, .text-area, .check-box, .radio-button,
+.combo-box, .list-view, .table-view, .tree-view, .tab-pane .tab-label,
+.button, .menu-item, .menu .label, .list-cell, .table-row-cell, .tree-cell,
+.tab, .combo-box .list-cell, .button .text {
+    -fx-text-fill: #1a1a1a;
+}
+
+.text-field, .text-area {
+    -fx-prompt-text-fill: #666666;
+}
+
+/* 全局透明背景 */
+.border-pane, .stack-pane, .split-pane, .tab-pane, .vbox, .hbox, .grid-pane, .anchor-pane {
+    -fx-background-color: transparent;
+}
+
+/* 列表选中行文字白色 */
+.list-cell:selected, .table-row-cell:selected, .tree-cell:selected {
+    -fx-text-fill: white;
+    -fx-background-color: #e68a9e;
+}
+
+/* 按钮粉色调，文字黑色 */
+.button {
+    -fx-background-color: rgba(230, 138, 158, 0.8);
+    -fx-text-fill: #1a1a1a;
+    -fx-background-radius: 20px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+    -fx-min-width: 60px;
+}
+.button:hover {
+    -fx-background-color: #d96b84;
+}
+.button-primary {
+    -fx-background-color: #e68a9e;
+    -fx-text-fill: white;
+}
+.button-primary:hover {
+    -fx-background-color: #d96b84;
+}
+
+/* 选项卡 */
+.tab-pane .tab {
+    -fx-background-color: rgba(255, 220, 230, 0.7);
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-min-width: 80px;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: rgba(255, 248, 250, 0.95);
+}
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #1a1a1a;
+}
+.tab-pane .tab:selected .tab-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #b3446c;
+}
+
+/* 列表换行 */
+.list-cell, .table-row-cell {
+    -fx-wrap-text: true;
+    -fx-padding: 4 8;
+}
+
+/* 滚动条 */
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+    -fx-background-color: #e68a9e;
+    -fx-background-radius: 8px;
+}

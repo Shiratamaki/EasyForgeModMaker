@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>常见问题</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; margin: 20px; line-height: 1.6; }
+        h1 { color: #b3446c; }
+        .qa { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .q { font-weight: bold; color: #d96b84; }
+        .a { margin-top: 5px; }
+    </style>
+</head>
+<body>
+<h1>❓ 常见问题</h1>
+
+<div class="qa">
+    <div class="q">Q: 如何导入现有模组项目？</div>
+    <div class="a">A: 点击“文件 → 导入项目”，选择 <code>.efmod</code> 文件或包含 <code>build.gradle</code> 的模组文件夹。</div>
+</div>
+
+<div class="qa">
+    <div class="q">Q: 生成的模组无法在游戏中运行？</div>
+    <div class="a">A: 请检查：<br>
+        - Minecraft 版本和 Forge 版本是否匹配。<br>
+        - 物品/方块的内部ID是否唯一且符合规范（小写字母、数字、下划线）。<br>
+        - 纹理图片是否为 PNG 格式且路径正确。<br>
+        - 项目是否已成功执行 Gradle 构建（可在项目目录运行 <code>gradlew build</code>）。</div>
+</div>
+
+<div class="qa">
+    <div class="q">Q: 如何添加自定义模型？</div>
+    <div class="a">A: 在实体编辑器中设置模型路径，支持 Java 模型（需编写代码）或 GeoJSON 模型（需配合 GeckoLib）。本工具暂不自动生成模型代码，需手动补充。</div>
+</div>
+
+<div class="qa">
+    <div class="q">Q: 软件打开时提示“无法检查更新”？</div>
+    <div class="a">A: 请确保网络畅通，GitHub API 有时会被限制。您也可以手动访问 <a href="https://github.com/YourUsername/EasyForgeModMaker/releases">GitHub Releases</a> 查看新版本。</div>
+</div>
+
+<div class="qa">
+    <div class="q">Q: 如何批量导入物品？</div>
+    <div class="a">A: 使用 CSV 文件（第一列为ID，第二列显示名称，第三列最大堆叠数，第四列纹理路径），然后点击“批量导入物品”。</div>
+</div>
+</body>
+</html>

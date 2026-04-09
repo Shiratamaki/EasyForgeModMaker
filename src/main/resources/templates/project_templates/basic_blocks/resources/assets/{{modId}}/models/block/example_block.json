@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "{{modId}}:block/example_block"
+  }
+}

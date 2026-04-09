@@ -1,0 +1,291 @@
+/* =========================================
+   modern.css - 全局基础样式
+   适用于所有主题，提供统一的控件外观
+   ========================================= */
+
+/* 根样式 */
+.root {
+    -fx-font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    -fx-font-size: 13px;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* 全局背景透明（让各主题背景透出） */
+.border-pane, .stack-pane, .split-pane, .tab-pane, .vbox, .hbox, .grid-pane, .anchor-pane {
+    -fx-background-color: transparent;
+}
+
+/* 标签样式 */
+.label {
+    -fx-text-fill: -fx-text-background-color;
+}
+
+/* 文本输入框 */
+.text-field, .text-area {
+    -fx-background-color: white;
+    -fx-background-radius: 6px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6px;
+    -fx-padding: 6px 10px;
+}
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #4a6ea8;
+    -fx-border-width: 1.5px;
+}
+
+/* 下拉框全局白色背景（覆盖所有主题） */
+.combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 6px;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6px;
+}
+.combo-box .arrow-button {
+    -fx-background-color: white;
+}
+.combo-box .list-cell {
+    -fx-background-color: white;
+    -fx-text-fill: #333;
+}
+.combo-box .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+}
+/* 特定 ID 提高优先级 */
+#mcVersionCombo, #forgeVersionCombo {
+    -fx-background-color: white;
+}
+
+/* 按钮样式 */
+.button {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 20px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: #d0d0d0;
+}
+.button:pressed {
+    -fx-background-color: #c0c0c0;
+}
+
+/* 主要按钮 */
+.button-primary {
+    -fx-background-color: #4a6ea8;
+    -fx-text-fill: white;
+}
+.button-primary:hover {
+    -fx-background-color: #3a5a8c;
+}
+
+/* 危险按钮 */
+.button-danger {
+    -fx-background-color: #e67e7e;
+    -fx-text-fill: white;
+}
+.button-danger:hover {
+    -fx-background-color: #c96b6b;
+}
+
+/* 表格视图 */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+.table-view .column-header-background {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 8px 8px 0 0;
+}
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: transparent;
+}
+.table-view .column-header .label {
+    -fx-font-weight: bold;
+}
+.table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+.table-row-cell:selected {
+    -fx-background-color: #e6f0ff;
+}
+.table-row-cell:selected .text {
+    -fx-fill: #1a3b5e;
+}
+
+/* 列表视图 */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+.list-cell {
+    -fx-padding: 6px 12px;
+}
+.list-cell:selected {
+    -fx-background-color: #e6f0ff;
+}
+.list-cell:selected .text {
+    -fx-fill: #1a3b5e;
+}
+
+/* 树视图 */
+.tree-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+.tree-cell {
+    -fx-padding: 6px 0 6px 12px;
+}
+.tree-cell:selected {
+    -fx-background-color: #e6f0ff;
+}
+
+/* 选项卡面板 */
+.tab-pane {
+    -fx-background-color: transparent;
+}
+.tab-header-area {
+    -fx-background-color: transparent;
+}
+.tab {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-padding: 6px 20px;
+}
+.tab:selected {
+    -fx-background-color: white;
+}
+.tab .tab-label {
+    -fx-text-fill: #333;
+}
+.tab:selected .tab-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a6ea8;
+}
+
+/* 滚动条 */
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #c0c0c0;
+    -fx-background-radius: 8px;
+}
+.scroll-bar .track {
+    -fx-background-color: #f0f0f0;
+}
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button,
+.scroll-bar:horizontal .increment-button,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+}
+
+/* 分隔线 */
+.separator .line {
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px;
+}
+
+/* 微调按钮 (Spinner) */
+.spinner {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6px;
+}
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #f0f0f0;
+}
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+/* 进度条 */
+.progress-bar .bar {
+    -fx-background-color: #4a6ea8;
+    -fx-background-radius: 8px;
+}
+.progress-bar .track {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 8px;
+}
+
+/* 上下文菜单 */
+.context-menu {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 6px;
+}
+.menu-item {
+    -fx-padding: 6px 20px;
+}
+.menu-item:hover {
+    -fx-background-color: #e6f0ff;
+}
+
+/* 提示框工具提示 */
+.tooltip {
+    -fx-background-color: rgba(0,0,0,0.85);
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 4px 8px;
+    -fx-background-radius: 4px;
+}
+
+/* 对话框（Alert） */
+.dialog-pane {
+    -fx-background-color: white;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: #f0f0f0;
+}
+.dialog-pane .button {
+    -fx-background-color: #e0e0e0;
+}
+
+/* 折叠面板（TitledPane） */
+.titled-pane {
+    -fx-background-color: transparent;
+}
+.titled-pane > .title {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 8px;
+    -fx-padding: 6px 12px;
+}
+.titled-pane > .content {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 0 0 8px 8px;
+}
+
+/* 通用卡片样式（用于自定义区域） */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+
+/* 确保列表单元格内容可换行且高度自适应 */
+.list-cell, .table-row-cell {
+    -fx-wrap-text: true;
+    -fx-cell-size: 30px; /* 初始行高，必要时会增长 */
+}
+
+/* 标签换行 */
+.label {
+    -fx-wrap-text: true;
+}
+
+/* 按钮最小宽度 */
+.button {
+    -fx-min-width: 70px;
+}

@@ -1,0 +1,47 @@
+/* ========== 全局基础样式 ========== */
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f0f0f0;
+}
+
+/* ========== 卡片样式 ========== */
+.card {
+    -fx-background-color: -color-bg-default;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 4);
+    -fx-padding: 16px;
+}
+
+/* ========== 按钮样式 ========== */
+.icon-button {
+    -fx-background-color: -color-accent-emphasis;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
+    -fx-graphic-text-gap: 8px;
+}
+.icon-button:hover {
+    -fx-background-color: derive(-color-accent-emphasis, -10%);
+}
+.icon-button:pressed {
+    -fx-background-color: derive(-color-accent-emphasis, -20%);
+}
+
+/* ========== 表格样式 ========== */
+.table-view {
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 4px;
+}
+.table-view .column-header-background {
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-background-color: -color-neutral-muted;
+}
+
+/* ========== 标签样式（可选） ========== */
+.icon-label {
+    -fx-graphic-text-gap: 6px;
+    -fx-font-weight: normal;
+}

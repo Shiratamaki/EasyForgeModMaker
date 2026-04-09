@@ -1,0 +1,76 @@
+/* =========================================
+   暗黑主题 - 深色背景，浅色文字
+   ========================================= */
+
+.root {
+    -fx-base: #3c3c3c;
+    -fx-background: #2b2b2b;
+    -fx-text-background-color: #e0e0e0;
+    -fx-control-inner-background: #4a4a4a;
+    -fx-font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* 全局透明背景 */
+.border-pane, .stack-pane, .split-pane, .tab-pane, .vbox, .hbox, .grid-pane, .anchor-pane {
+    -fx-background-color: transparent;
+}
+
+/* 文字颜色 */
+.label, .text, .text-field, .text-area, .check-box, .radio-button,
+.combo-box, .list-view, .table-view, .tree-view, .tab-pane .tab-label,
+.button, .menu-item, .menu .label {
+    -fx-text-fill: #e0e0e0;
+}
+
+.text-field, .text-area {
+    -fx-prompt-text-fill: derive(#e0e0e0, -40%);
+}
+
+.list-cell, .table-row-cell, .tree-cell {
+    -fx-text-fill: #e0e0e0;
+}
+.list-cell:selected, .table-row-cell:selected, .tree-cell:selected {
+    -fx-text-fill: black;
+    -fx-background-color: #5a8ab0;
+}
+
+/* 按钮 */
+.button {
+    -fx-background-color: #5a5a5a;
+    -fx-background-radius: 20px;
+    -fx-padding: 6px 16px;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: #6a6a6a;
+}
+.button-primary {
+    -fx-background-color: #5a8ab0;
+    -fx-text-fill: white;
+}
+.button-primary:hover {
+    -fx-background-color: #4a7a9a;
+}
+
+/* 选项卡 */
+.tab-pane .tab {
+    -fx-background-color: #4a4a4a;
+    -fx-background-radius: 8px 8px 0 0;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: #5a5a5a;
+}
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #e0e0e0;
+}
+.tab-pane .tab:selected .tab-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #9ac0e0;
+}
+
+/* 滚动条 */
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+    -fx-background-color: #6a6a6a;
+    -fx-background-radius: 8px;
+}
