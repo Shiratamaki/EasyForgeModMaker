@@ -1,5 +1,6 @@
 /* =========================================
    暗黑主题 - 深色背景，浅色文字
+   选项卡半透深色，文本框深色背景
    ========================================= */
 
 .root {
@@ -7,40 +8,41 @@
     -fx-background: #2b2b2b;
     -fx-text-background-color: #e0e0e0;
     -fx-control-inner-background: #4a4a4a;
-    -fx-font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-    -fx-font-size: 13px;
 }
 
-/* 全局透明背景 */
-.border-pane, .stack-pane, .split-pane, .tab-pane, .vbox, .hbox, .grid-pane, .anchor-pane {
-    -fx-background-color: transparent;
+/* 选项卡背景 */
+.tab-pane .tab {
+    -fx-background-color: rgba(60, 60, 60, 0.85) !important;
+    -fx-background-radius: 8px 8px 0 0 !important;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: #4a4a4a !important;
+}
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #e0e0e0 !important;
+}
+.tab-pane .tab:selected .tab-label {
+    -fx-font-weight: bold !important;
+    -fx-text-fill: #9ac0e0 !important;
 }
 
-/* 文字颜色 */
-.label, .text, .text-field, .text-area, .check-box, .radio-button,
-.combo-box, .list-view, .table-view, .tree-view, .tab-pane .tab-label,
-.button, .menu-item, .menu .label {
+/* 文本框深色背景，浅色文字 */
+.text-field, .text-area, .text-area .content {
+    -fx-background-color: #3c3c3c;
     -fx-text-fill: #e0e0e0;
+    -fx-prompt-text-fill: #888888;
+    -fx-border-color: #5a5a5a;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
 }
-
-.text-field, .text-area {
-    -fx-prompt-text-fill: derive(#e0e0e0, -40%);
-}
-
-.list-cell, .table-row-cell, .tree-cell {
-    -fx-text-fill: #e0e0e0;
-}
-.list-cell:selected, .table-row-cell:selected, .tree-cell:selected {
-    -fx-text-fill: black;
-    -fx-background-color: #5a8ab0;
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #5a8ab0;
 }
 
 /* 按钮 */
 .button {
     -fx-background-color: #5a5a5a;
-    -fx-background-radius: 20px;
-    -fx-padding: 6px 16px;
-    -fx-cursor: hand;
+    -fx-text-fill: #e0e0e0;
 }
 .button:hover {
     -fx-background-color: #6a6a6a;
@@ -53,24 +55,24 @@
     -fx-background-color: #4a7a9a;
 }
 
-/* 选项卡 */
-.tab-pane .tab {
-    -fx-background-color: #4a4a4a;
-    -fx-background-radius: 8px 8px 0 0;
-}
-.tab-pane .tab:selected {
-    -fx-background-color: #5a5a5a;
-}
-.tab-pane .tab .tab-label {
+/* 列表单元格 */
+.list-cell, .table-row-cell {
     -fx-text-fill: #e0e0e0;
 }
-.tab-pane .tab:selected .tab-label {
-    -fx-font-weight: bold;
-    -fx-text-fill: #9ac0e0;
+.list-cell:selected, .table-row-cell:selected {
+    -fx-background-color: #5a8ab0;
+    -fx-text-fill: white;
 }
 
-/* 滚动条 */
-.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
-    -fx-background-color: #6a6a6a;
-    -fx-background-radius: 8px;
+/* 下拉框背景 */
+.combo-box {
+    -fx-background-color: #3c3c3c;
+    -fx-border-color: #5a5a5a;
+}
+.combo-box .list-cell {
+    -fx-background-color: #3c3c3c;
+    -fx-text-fill: #e0e0e0;
+}
+.combo-box .list-cell:hover {
+    -fx-background-color: #5a5a5a;
 }

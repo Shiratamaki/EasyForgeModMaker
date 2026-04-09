@@ -1,7 +1,6 @@
 package com.easyforge;
 
 import com.easyforge.controller.MainController;
-import com.easyforge.core.generator.ProjectGenerator;
 import com.easyforge.ui.SetupWizard;
 import com.easyforge.ui.ThemeManager;
 import javafx.application.Application;
@@ -13,12 +12,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.prefs.Preferences;
 
 public class EasyForgeApp extends Application {
@@ -26,107 +21,95 @@ public class EasyForgeApp extends Application {
     private static Stage primaryStage;
     private static MainController mainController;
 
+    public static void main(String[] args) {
+        try {
+            launch(args);
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.err.println("应用程序启动失败，请检查错误信息。");
+            try {
+                System.in.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        EasyForgeApp.primaryStage = primaryStage;
-
-        Preferences prefs = Preferences.userNodeForPackage(EasyForgeApp.class);
-        if (!prefs.getBoolean("setupCompleted", false)) {
-            SetupWizard wizard = new SetupWizard();
-            wizard.showAndWait();
-        }
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
-        Parent root = loader.load();
-        mainController = loader.getController();
-
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("EasyForge Mod Maker");
-
-        // 设置窗口图标
+    public void start(Stage primaryStage) {
         try {
-            InputStream iconStream = getClass().getResourceAsStream("/icons/icon.png");
-            if (iconStream != null) {
-                Image icon = new Image(iconStream);
-                primaryStage.getIcons().add(icon);
+            EasyForgeApp.primaryStage = primaryStage;
+
+            Preferences prefs = Preferences.userNodeForPackage(EasyForgeApp.class);
+            if (!prefs.getBoolean("setupCompleted", false)) {
+                SetupWizard wizard = new SetupWizard();
+                wizard.showAndWait();
             }
-        } catch (Exception e) {
-            System.err.println("无法加载窗口图标: " + e.getMessage());
-        }
 
-        // 应用保存的主题
-        String themePref = prefs.get("theme", "LIGHT");
-        ThemeManager.Theme theme;
-        switch (themePref) {
-            case "DARK": theme = ThemeManager.Theme.DARK; break;
-            case "SAKURA": theme = ThemeManager.Theme.SAKURA; break;
-            default: theme = ThemeManager.Theme.LIGHT;
-        }
-        mainController.setTheme(theme);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
+            Parent root = loader.load();
+            mainController = loader.getController();
 
-        primaryStage.show();
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("EasyForge Mod Maker");
 
-        // 处理命令行参数（必须在界面显示后）
-        handleCommandLineArgs();
-    }
+            // 设置窗口初始大小，并允许用户调整
+            primaryStage.setWidth(1200);
+            primaryStage.setHeight(800);
+            primaryStage.setMinWidth(900);
+            primaryStage.setMinHeight(600);
 
-    private void handleCommandLineArgs() {
-        Parameters params = getParameters();
-        List<String> args = params.getRaw();
-        if (args.isEmpty()) return;
-
-        String firstArg = args.get(0);
-        if ("--open".equals(firstArg) && args.size() > 1) {
-            String projectPath = args.get(1);
-            File projectFile = new File(projectPath);
-            if (projectFile.exists()) {
-                Platform.runLater(() -> mainController.loadProject(projectFile));
-            } else {
-                System.err.println("项目路径不存在: " + projectPath);
+            // 设置窗口图标
+            try {
+                InputStream iconStream = getClass().getResourceAsStream("/icons/icon.png");
+                if (iconStream != null) {
+                    Image icon = new Image(iconStream);
+                    primaryStage.getIcons().add(icon);
+                } else {
+                    System.err.println("窗口图标未找到: /icons/icon.png");
+                }
+            } catch (Exception e) {
+                System.err.println("无法加载窗口图标: " + e.getMessage());
             }
-        } else if ("--generate".equals(firstArg) && args.size() > 1) {
-            String configPath = args.get(1);
-            generateFromConfig(configPath);
-            Platform.exit();
-        } else if ("--help".equals(firstArg)) {
-            printHelp();
+
+            // 应用保存的主题
+            String themePref = prefs.get("theme", "LIGHT");
+            ThemeManager.Theme theme;
+            switch (themePref) {
+                case "DARK": theme = ThemeManager.Theme.DARK; break;
+                case "SAKURA": theme = ThemeManager.Theme.SAKURA; break;
+                default: theme = ThemeManager.Theme.LIGHT;
+            }
+            mainController.setTheme(theme);
+
+            primaryStage.show();
+        } catch (Throwable t) {
+            t.printStackTrace();
+            System.err.println("启动过程中发生错误，请检查控制台输出。");
             Platform.exit();
         }
-    }
-
-    private void generateFromConfig(String configPath) {
-        try {
-            Path path = Path.of(configPath);
-            String json = Files.readString(path);
-            // 简单解析 JSON（可使用 Gson，这里简化）
-            // 实际应解析为 Map，然后调用 ProjectGenerator.generate
-            System.out.println("从配置文件生成项目: " + configPath);
-            // 示例：调用生成器
-            // Map<String, String> params = new Gson().fromJson(json, Map.class);
-            // new ProjectGenerator().generate(params);
-        } catch (Exception e) {
-            System.err.println("生成项目失败: " + e.getMessage());
-        }
-    }
-
-    private void printHelp() {
-        System.out.println("EasyForge Mod Maker 命令行用法:");
-        System.out.println("  --open <项目路径>    打开指定项目");
-        System.out.println("  --generate <配置文件> 从JSON配置文件生成项目");
-        System.out.println("  --help               显示此帮助信息");
     }
 
     public static void openProject(File projectDir) {
         Platform.runLater(() -> {
             if (mainController != null) {
                 mainController.loadProject(projectDir);
-                if (primaryStage != null) primaryStage.toFront();
+                if (primaryStage != null) {
+                    primaryStage.toFront();
+                }
+            } else {
+                try {
+                    new EasyForgeApp().start(new Stage());
+                    Platform.runLater(() -> {
+                        if (mainController != null) {
+                            mainController.loadProject(projectDir);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

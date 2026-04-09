@@ -13,7 +13,7 @@ public class UpdateChecker {
     private static final String REPO_OWNER = "Shiratamaki";   // 请修改为您的GitHub用户名
     private static final String REPO_NAME = "EasyForgeModMaker";
     private static final String API_URL = "https://api.github.com/repos/" + REPO_OWNER + "/" + REPO_NAME + "/releases/latest";
-    public static final String CURRENT_VERSION = "1.0b";
+    public static final String CURRENT_VERSION = "1.0.0";
 
     private static final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)

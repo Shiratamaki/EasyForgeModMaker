@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 唯美樱花飘落背景 - 增强版（五瓣樱花）
+ * 唯美樱花飘落背景 - 轻量级，专为樱色主题设计
  */
 public class SakuraBackground extends StackPane {
     private final Canvas canvas;
     private final List<Petal> petals = new ArrayList<>();
     private final Random random = new Random();
-    private final int petalCount = 100;
+    private final int petalCount; // 随机数量
     private AnimationTimer timer;
 
     public SakuraBackground() {
@@ -32,14 +32,18 @@ public class SakuraBackground extends StackPane {
         widthProperty().addListener((obs, old, val) -> initPetals());
         heightProperty().addListener((obs, old, val) -> initPetals());
 
+        // 随机生成 40~80 片花瓣
+        petalCount = 40 + random.nextInt(41);
         initPetals();
         startAnimation();
     }
 
     private void initPetals() {
         petals.clear();
+        double w = canvas.getWidth();
+        double h = canvas.getHeight();
         for (int i = 0; i < petalCount; i++) {
-            petals.add(new Petal());
+            petals.add(new Petal(w, h));
         }
     }
 
@@ -80,55 +84,64 @@ public class SakuraBackground extends StackPane {
 
     private class Petal {
         double x, y;
-        double speedY, speedX, swing;
-        double size;
-        double opacity;
-        double rotation, rotSpeed;
+        double sizeX, sizeY;   // 椭圆长轴、短轴
+        double speedY;         // 下落速度
+        double speedX;         // 水平飘移
+        double swing;          // 摆动相位
+        double angle;          // 旋转角度
+        double rotSpeed;       // 旋转速度
+        Color color;           // 花瓣颜色（粉白渐变）
 
-        Petal() { reset(); }
+        Petal(double width, double height) {
+            reset(width, height);
+        }
 
-        void reset() {
-            x = random.nextDouble() * 1200;
-            y = random.nextDouble() * 800 - 200;
-            speedY = 0.6 + random.nextDouble() * 1.2;
-            speedX = -0.2 + random.nextDouble() * 0.4;
+        void reset(double width, double height) {
+            x = random.nextDouble() * width;
+            y = random.nextDouble() * height - 100; // 部分从上方开始
+            sizeX = 6 + random.nextDouble() * 6;     // 宽度 6~12
+            sizeY = sizeX * 0.7;                     // 高度略小，呈椭圆形
+            speedY = 0.5 + random.nextDouble() * 1.0; // 下落速度 0.5~1.5 像素/帧
+            speedX = -0.2 + random.nextDouble() * 0.4; // 水平飘移 -0.2~0.2
             swing = random.nextDouble() * Math.PI * 2;
-            size = 10 + random.nextDouble() * 8;
-            opacity = 0.6 + random.nextDouble() * 0.3;
-            rotation = random.nextDouble() * 360;
-            rotSpeed = -0.8 + random.nextDouble() * 1.6;
+            angle = random.nextDouble() * 360;
+            rotSpeed = -0.5 + random.nextDouble() * 1.0; // 旋转速度
+            // 颜色：粉白渐变，基于随机亮度
+            double r = 1.0;
+            double g = 0.7 + random.nextDouble() * 0.3;
+            double b = 0.7 + random.nextDouble() * 0.3;
+            double opacity = 0.6 + random.nextDouble() * 0.3;
+            color = new Color(r, g, b, opacity);
         }
 
         void update(double width, double height, double delta) {
-            x += (speedX + Math.sin(swing) * 0.3) * delta * 60;
-            y += speedY * delta * 60;
-            rotation += rotSpeed * delta * 60;
-            swing += 0.05;
-            if (x > width + 80 || x < -80 || y > height + 80) {
+            // 使用 delta 时间控制速度（60fps 为基准）
+            double factor = delta * 60;
+            y += speedY * factor;
+            x += (speedX + Math.sin(swing) * 0.2) * factor;
+            angle += rotSpeed * factor;
+            swing += 0.03;
+
+            // 超出边界则重置到顶部
+            if (y > height + 50 || x < -50 || x > width + 50) {
                 x = random.nextDouble() * width;
-                y = -40;
-                speedY = 0.6 + random.nextDouble() * 1.2;
+                y = -30;
+                speedY = 0.5 + random.nextDouble() * 1.0;
                 speedX = -0.2 + random.nextDouble() * 0.4;
+                angle = random.nextDouble() * 360;
             }
         }
 
         void draw(GraphicsContext gc) {
             gc.save();
             gc.translate(x, y);
-            gc.rotate(rotation);
-            double w = size;
-            double h = size * 0.8;
-            // 绘制五瓣樱花（简化：多个椭圆叠加）
-            gc.setFill(Color.rgb(255, 180, 200, opacity));
-            for (int i = 0; i < 5; i++) {
-                double angle = i * 72 * Math.PI / 180;
-                double dx = Math.cos(angle) * size * 0.4;
-                double dy = Math.sin(angle) * size * 0.4;
-                gc.fillOval(dx - w/2, dy - h/2, w, h);
-            }
-            // 中心花蕊
-            gc.setFill(Color.rgb(255, 100, 120, opacity));
-            gc.fillOval(-3, -3, 6, 6);
+            gc.rotate(angle);
+            // 绘制椭圆花瓣
+            gc.setFill(color);
+            gc.fillOval(-sizeX/2, -sizeY/2, sizeX, sizeY);
+            // 添加高光（浅色内圈）
+            gc.setFill(new Color(1, 1, 1, 0.3));
+            gc.fillOval(-sizeX/3, -sizeY/3, sizeX*0.6, sizeY*0.6);
             gc.restore();
         }
     }

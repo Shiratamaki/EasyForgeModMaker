@@ -48,9 +48,9 @@ import java.util.stream.Collectors;
 public class MainController {
 
     @FXML private StackPane rootStackPane;
-    @FXML private BorderPane mainBorderPane;
     @FXML private TreeView<File> fileTreeView;
     @FXML private TabPane tabPane;
+    @FXML private SplitPane mainSplitPane;
     @FXML private Tab projectWizardTab;
     @FXML private Tab itemEditorTab;
     @FXML private Tab blockEditorTab;
@@ -205,20 +205,37 @@ public class MainController {
             Scene scene = rootStackPane.getScene();
             if (scene != null) {
                 ThemeManager.applyTheme(scene, theme);
-                // 根据主题添加或移除樱花背景
                 if (theme == ThemeManager.Theme.SAKURA) {
                     addSakura();
                 } else {
                     removeSakura();
                 }
                 themeApplied = true;
+            } else {
+                System.err.println("setTheme: scene is null, retrying...");
+                javafx.application.Platform.runLater(() -> {
+                    Scene scene2 = rootStackPane.getScene();
+                    if (scene2 != null) {
+                        ThemeManager.applyTheme(scene2, theme);
+                        if (theme == ThemeManager.Theme.SAKURA) addSakura();
+                        else removeSakura();
+                    } else {
+                        System.err.println("setTheme: scene still null");
+                    }
+                });
             }
         });
     }
 
     @FXML
     public void initialize() {
-        mainBorderPane.setStyle("-fx-background-color: transparent;");
+        // 调整左侧文件树宽度和选项卡标签最小宽度
+        if (mainSplitPane != null) {
+            mainSplitPane.setDividerPositions(0.2);
+        }
+        if (tabPane != null) {
+            tabPane.setTabMinWidth(80);
+        }
 
         fileTreeView.setVisible(false);
         itemEditorTab.setDisable(true);

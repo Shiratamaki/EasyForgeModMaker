@@ -2,509 +2,215 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <StackPane fx:id="rootStackPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.easyforge.controller.MainController">
-    <BorderPane fx:id="mainBorderPane">
-        <top>
-            <MenuBar>
-                <Menu fx:id="fileMenu" text="文件">
-                    <MenuItem fx:id="newMenuItem" text="新建项目" onAction="#onNewProject"/>
-                    <MenuItem fx:id="openMenuItem" text="打开项目" onAction="#onOpenProject"/>
-                    <MenuItem fx:id="saveMenuItem" text="保存项目" onAction="#onSaveProject"/>
-                    <SeparatorMenuItem/>
-                    <MenuItem fx:id="gitInitMenuItem" text="初始化 Git 仓库" onAction="#onGitInit"/>
-                    <MenuItem fx:id="gitCommitMenuItem" text="提交更改..." onAction="#onGitCommit"/>
-                    <MenuItem fx:id="gitPushMenuItem" text="推送..." onAction="#onGitPush"/>
-                    <MenuItem fx:id="gitPullMenuItem" text="拉取..." onAction="#onGitPull"/>
-                    <MenuItem fx:id="gitStatusMenuItem" text="查看状态" onAction="#onGitStatus"/>
-                    <SeparatorMenuItem/>
-                    <MenuItem fx:id="exportMenuItem" text="导出项目" onAction="#onExportProject"/>
-                    <MenuItem fx:id="importMenuItem" text="导入项目" onAction="#onImportProject"/>
-                    <SeparatorMenuItem/>
-                    <MenuItem fx:id="exitMenuItem" text="退出" onAction="#onExit"/>
-                </Menu>
-                <Menu fx:id="editMenu" text="编辑">
-                    <MenuItem fx:id="undoMenuItem" text="撤销" onAction="#onUndo" accelerator="Ctrl+Z"/>
-                    <MenuItem fx:id="redoMenuItem" text="重做" onAction="#onRedo" accelerator="Ctrl+Y"/>
-                </Menu>
-                <Menu fx:id="themeMenu" text="主题">
-                    <MenuItem fx:id="lightThemeMenuItem" text="白色主题" onAction="#switchToLightTheme"/>
-                    <MenuItem fx:id="darkThemeMenuItem" text="黑色主题" onAction="#switchToDarkTheme"/>
-                    <MenuItem fx:id="sakuraThemeMenuItem" text="淡樱主题" onAction="#switchToSakuraTheme"/>
-                </Menu>
-                <Menu fx:id="languageMenu" text="语言">
-                    <MenuItem fx:id="chineseMenuItem" text="简体中文" onAction="#switchToChinese"/>
-                    <MenuItem fx:id="englishMenuItem" text="English" onAction="#switchToEnglish"/>
-                </Menu>
-                <Menu fx:id="helpMenu" text="帮助">
-                    <MenuItem fx:id="checkUpdateMenuItem" text="检查更新" onAction="#onCheckForUpdates"/>
-                    <MenuItem fx:id="snippetMenuItem" text="代码片段库" onAction="#onOpenSnippetLibrary"/>
-                    <MenuItem fx:id="helpDocMenuItem" text="帮助文档" onAction="#onOpenHelp"/>
-                    <MenuItem fx:id="validateMenuItem" text="验证项目" onAction="#onValidateProject"/>
-                    <MenuItem fx:id="logDirMenuItem" text="打开日志目录" onAction="#onOpenLogDir"/>
-                    <MenuItem fx:id="aboutMenuItem" text="关于" onAction="#onAbout"/>
-                </Menu>
-            </MenuBar>
-        </top>
+    <VBox spacing="5" VBox.vgrow="ALWAYS">
+        <MenuBar>
+            <Menu fx:id="fileMenu" text="文件">
+                <MenuItem fx:id="newMenuItem" text="新建项目" onAction="#onNewProject"/>
+                <MenuItem fx:id="openMenuItem" text="打开项目" onAction="#onOpenProject"/>
+                <MenuItem fx:id="saveMenuItem" text="保存项目" onAction="#onSaveProject"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="exportMenuItem" text="导出项目" onAction="#onExportProject"/>
+                <MenuItem fx:id="importMenuItem" text="导入项目" onAction="#onImportProject"/>
+                <SeparatorMenuItem/>
+                <MenuItem fx:id="exitMenuItem" text="退出" onAction="#onExit"/>
+            </Menu>
+            <Menu fx:id="editMenu" text="编辑">
+                <MenuItem fx:id="undoMenuItem" text="撤销" onAction="#onUndo" accelerator="Ctrl+Z"/>
+                <MenuItem fx:id="redoMenuItem" text="重做" onAction="#onRedo" accelerator="Ctrl+Y"/>
+            </Menu>
+            <Menu fx:id="themeMenu" text="主题">
+                <MenuItem fx:id="lightThemeMenuItem" text="明亮主题" onAction="#switchToLightTheme"/>
+                <MenuItem fx:id="darkThemeMenuItem" text="暗黑主题" onAction="#switchToDarkTheme"/>
+                <MenuItem fx:id="sakuraThemeMenuItem" text="樱花主题" onAction="#switchToSakuraTheme"/>
+            </Menu>
+            <Menu fx:id="helpMenu" text="帮助">
+                <MenuItem fx:id="helpDocMenuItem" text="帮助文档" onAction="#onOpenHelp"/>
+                <MenuItem fx:id="checkUpdateMenuItem" text="检查更新" onAction="#onCheckForUpdates"/>
+                <MenuItem fx:id="snippetMenuItem" text="代码片段库" onAction="#onOpenSnippetLibrary"/>
+                <MenuItem fx:id="logDirMenuItem" text="打开日志目录" onAction="#onOpenLogDir"/>
+                <MenuItem fx:id="aboutMenuItem" text="关于" onAction="#onAbout"/>
+            </Menu>
+            <Menu fx:id="languageMenu" text="语言">
+                <MenuItem fx:id="chineseMenuItem" text="简体中文" onAction="#switchToChinese"/>
+                <MenuItem fx:id="englishMenuItem" text="English" onAction="#switchToEnglish"/>
+            </Menu>
+        </MenuBar>
 
-        <center>
-            <SplitPane dividerPositions="0.28">
-                <items>
-                    <!-- 左侧文件树 -->
-                    <VBox spacing="5" styleClass="card">
-                        <padding><Insets top="15" right="10" bottom="15" left="10"/></padding>
-                        <Label text="项目文件" styleClass="card-title">
-                            <tooltip><Tooltip text="显示项目目录结构，右键可新建/删除/重命名文件"/></tooltip>
-                        </Label>
-                        <TreeView fx:id="fileTreeView" VBox.vgrow="ALWAYS" styleClass="file-tree"/>
+        <SplitPane fx:id="mainSplitPane" dividerPositions="0.22" VBox.vgrow="ALWAYS">
+            <VBox spacing="5" prefWidth="200" minWidth="150">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <Label text="项目文件" style="-fx-font-weight: bold;"/>
+                <TreeView fx:id="fileTreeView" VBox.vgrow="ALWAYS"/>
+            </VBox>
+
+            <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" tabMinWidth="80" VBox.vgrow="ALWAYS">
+                <!-- 新建项目 Tab -->
+                <Tab fx:id="projectWizardTab" text="新建项目">
+                    <VBox spacing="10" VBox.vgrow="ALWAYS">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                            <VBox spacing="10">
+                                <Label text="Minecraft 版本"/>
+                                <ComboBox fx:id="mcVersionCombo" maxWidth="Infinity"/>
+                                <Label text="Forge 版本"/>
+                                <ComboBox fx:id="forgeVersionCombo" maxWidth="Infinity"/>
+                                <Label text="模组 ID"/>
+                                <TextField fx:id="modIdField" promptText="小写字母、数字、下划线" maxWidth="Infinity"/>
+                                <Label text="模组名称"/>
+                                <TextField fx:id="modNameField" maxWidth="Infinity"/>
+                                <Label text="作者"/>
+                                <TextField fx:id="authorField" maxWidth="Infinity"/>
+                                <Label text="输出路径"/>
+                                <HBox spacing="5">
+                                    <TextField fx:id="outputPathField" HBox.hgrow="ALWAYS"/>
+                                    <Button fx:id="browseOutputBtn" text="浏览"/>
+                                </HBox>
+                                <Label text="模板"/>
+                                <ComboBox fx:id="templateCombo" maxWidth="Infinity"/>
+                                <Button fx:id="generateProjectBtn" text="生成项目" maxWidth="Infinity"/>
+                                <ProgressBar fx:id="progressBar" visible="false" prefWidth="300" maxWidth="Infinity"/>
+                                <Label fx:id="statusLabel"/>
+                            </VBox>
+                        </ScrollPane>
                     </VBox>
+                </Tab>
 
-                    <!-- 右侧选项卡 -->
-                    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" styleClass="modern-tab-pane">
-                        <!-- 项目向导 -->
-                        <Tab fx:id="projectWizardTab" text="项目向导" closable="false">
-                            <VBox spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="新建模组项目" styleClass="wizard-title"/>
-                                <Label text="💡 提示：首次使用请先阅读帮助文档（帮助 -> 帮助文档），下方可选用项目模板快速开始" style="-fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+                <!-- 物品编辑器 Tab -->
+                <Tab fx:id="itemEditorTab" text="物品"/>
 
-                                <Label text="Minecraft 版本" styleClass="form-label"/>
-                                <ComboBox fx:id="mcVersionCombo" promptText="选择 MC 版本" styleClass="modern-combo">
-                                    <tooltip><Tooltip text="选择你要开发的 Minecraft 版本，推荐 1.20.1（稳定且模组多）"/></tooltip>
-                                </ComboBox>
+                <!-- 方块编辑器 Tab -->
+                <Tab fx:id="blockEditorTab" text="方块"/>
 
-                                <Label text="Forge 版本" styleClass="form-label"/>
-                                <ComboBox fx:id="forgeVersionCombo" promptText="选择 Forge 版本" styleClass="modern-combo">
-                                    <tooltip><Tooltip text="选择对应 MC 版本的 Forge 版本，下拉框中已给出推荐（与MC版本匹配）"/></tooltip>
-                                </ComboBox>
+                <!-- 配方编辑器 Tab -->
+                <Tab fx:id="recipeEditorTab" text="配方">
+                    <VBox spacing="10" VBox.vgrow="ALWAYS">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                        <HBox spacing="10">
+                            <TextField fx:id="itemSearchField" promptText="搜索物品..." HBox.hgrow="ALWAYS"/>
+                        </HBox>
+                        <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
+                            <ListView fx:id="itemListView"/>
+                            <VBox fx:id="recipeEditorContainer" VBox.vgrow="ALWAYS"/>
+                        </SplitPane>
+                        <TableView fx:id="recipeTableView" VBox.vgrow="ALWAYS" prefHeight="0">
+                            <columns>
+                                <TableColumn fx:id="recipeOutputCol" text="输出物品" prefWidth="200"/>
+                                <TableColumn fx:id="recipeCountCol" text="数量" prefWidth="80"/>
+                                <TableColumn fx:id="recipeShapedCol" text="有序" prefWidth="80"/>
+                            </columns>
+                        </TableView>
+                        <HBox spacing="10" alignment="CENTER_RIGHT" VBox.vgrow="NEVER">
+                            <Button text="添加配方" onAction="#addRecipe"/>
+                            <Button text="更新配方" onAction="#updateRecipe"/>
+                            <Button text="删除配方" onAction="#deleteRecipe"/>
+                            <Button text="清空网格" onAction="#clearRecipeGrid"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
 
-                                <Label text="模组 ID" styleClass="form-label"/>
-                                <TextField fx:id="modIdField" promptText="例如: example_mod" styleClass="modern-field">
-                                    <tooltip><Tooltip text="模组唯一标识符，只能包含小写字母、数字和下划线，例如 my_first_mod"/></tooltip>
-                                </TextField>
+                <!-- AI 助手 Tab -->
+                <Tab fx:id="aiChatTab" text="AI助手">
+                    <fx:include source="ai_chat.fxml"/>
+                </Tab>
 
-                                <Label text="模组名称" styleClass="form-label"/>
-                                <TextField fx:id="modNameField" promptText="例如: Example Mod" styleClass="modern-field">
-                                    <tooltip><Tooltip text="模组显示名称，会显示在游戏模组列表中，例如「我的第一个模组」"/></tooltip>
-                                </TextField>
+                <!-- 依赖管理 Tab -->
+                <Tab fx:id="dependencyTab" text="依赖">
+                    <VBox spacing="10" VBox.vgrow="ALWAYS">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                        <TableView fx:id="dependencyTableView" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="depModIdCol" text="模组ID" prefWidth="150"/>
+                                <TableColumn fx:id="depMandatoryCol" text="必需" prefWidth="60"/>
+                                <TableColumn fx:id="depVersionCol" text="版本范围" prefWidth="120"/>
+                                <TableColumn fx:id="depOrderingCol" text="顺序" prefWidth="80"/>
+                                <TableColumn fx:id="depSideCol" text="侧" prefWidth="80"/>
+                            </columns>
+                        </TableView>
+                        <GridPane hgap="10" vgap="10" VBox.vgrow="NEVER">
+                            <Label text="模组ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="depModIdField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            <Label text="必需:" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                            <CheckBox fx:id="depMandatoryCheck" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                            <Label text="版本范围:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <TextField fx:id="depVersionField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            <Label text="顺序:" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                            <ComboBox fx:id="depOrderingCombo" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
+                            <Label text="侧:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                            <ComboBox fx:id="depSideCombo" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        </GridPane>
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button fx:id="addDepBtn" text="添加"/>
+                            <Button fx:id="updateDepBtn" text="更新"/>
+                            <Button fx:id="deleteDepBtn" text="删除"/>
+                        </HBox>
+                    </VBox>
+                </Tab>
 
-                                <Label text="作者" styleClass="form-label"/>
-                                <TextField fx:id="authorField" promptText="作者名" styleClass="modern-field">
-                                    <tooltip><Tooltip text="你的名字或团队名称，会显示在 mods.toml 中"/></tooltip>
-                                </TextField>
-
-                                <Label text="输出路径" styleClass="form-label"/>
-                                <HBox spacing="8">
-                                    <TextField fx:id="outputPathField" HBox.hgrow="ALWAYS" styleClass="modern-field">
-                                        <tooltip><Tooltip text="项目生成的文件夹位置，建议选择一个空目录（如桌面上的一个新文件夹）"/></tooltip>
-                                    </TextField>
-                                    <Button fx:id="browseOutputBtn" text="浏览" styleClass="modern-button-secondary">
-                                        <tooltip><Tooltip text="打开文件夹选择对话框"/></tooltip>
-                                    </Button>
-                                </HBox>
-
-                                <Label text="项目模板" styleClass="form-label"/>
-                                <ComboBox fx:id="templateCombo" promptText="选择模板" styleClass="modern-combo">
-                                    <tooltip><Tooltip text="可选预置模板：基础物品模组会生成示例物品，基础方块模组会生成示例方块，方便快速上手"/></tooltip>
-                                </ComboBox>
-
-                                <HBox spacing="15" alignment="CENTER">
-                                    <Button fx:id="generateProjectBtn" text="生成项目" styleClass="modern-button-primary">
-                                        <tooltip><Tooltip text="点击后根据以上配置生成一个完整的 Forge 模组项目（包含 build.gradle, 主类等）"/></tooltip>
-                                    </Button>
-                                    <ProgressBar fx:id="progressBar" visible="false" prefWidth="200" styleClass="modern-progress"/>
-                                </HBox>
-                                <Label fx:id="statusLabel" styleClass="status-label"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 物品编辑器 -->
-                        <Tab fx:id="itemEditorTab" text="物品编辑器" closable="false">
-                            <VBox spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="物品管理" styleClass="wizard-title"/>
-                                <Label text="📦 示例：添加一个名为「钻石剑」的武器，ID: diamond_sword，攻击伤害+7，攻击速度+1.6，耐久1500" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                                <TableView fx:id="itemTableView" prefHeight="200">
-                                    <columns>
-                                        <TableColumn fx:id="itemIdCol" text="物品ID" prefWidth="120"/>
-                                        <TableColumn fx:id="itemNameCol" text="显示名称" prefWidth="150"/>
-                                        <TableColumn fx:id="itemStackCol" text="最大堆叠" prefWidth="80"/>
-                                        <TableColumn fx:id="itemTypeCol" text="类型" prefWidth="100"/>
-                                    </columns>
-                                </TableView>
-                                <HBox spacing="10">
-                                    <Button fx:id="addItemBtn" text="添加" styleClass="modern-button-primary">
-                                        <tooltip><Tooltip text="将下方填写的物品添加到列表（支持普通物品、工具、武器、盔甲）"/></tooltip>
-                                    </Button>
-                                    <Button fx:id="updateItemBtn" text="更新" styleClass="modern-button-secondary">
-                                        <tooltip><Tooltip text="修改选中的物品属性"/></tooltip>
-                                    </Button>
-                                    <Button fx:id="deleteItemBtn" text="删除" styleClass="modern-button-danger">
-                                        <tooltip><Tooltip text="删除选中的物品（会弹出确认对话框）"/></tooltip>
-                                    </Button>
-                                    <Button text="批量导入" onAction="#onBatchImportItems" styleClass="modern-button-secondary">
-                                        <tooltip><Tooltip text="从 CSV 文件批量导入物品（格式：ID,显示名称,最大堆叠,纹理路径）"/></tooltip>
-                                    </Button>
-                                    <Button text="导入纹理" onAction="#onImportTextures" styleClass="modern-button-secondary">
-                                        <tooltip><Tooltip text="导入图片文件自动生成物品模型 JSON 和纹理引用"/></tooltip>
-                                    </Button>
-                                </HBox>
-                                <Separator/>
-                                <GridPane hgap="15" vgap="12">
-                                    <Label text="物品ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                    <TextField fx:id="itemIdField" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                        <tooltip><Tooltip text="物品注册名，例如 my_sword，只能小写字母数字下划线，不可包含中文"/></tooltip>
-                                    </TextField>
-                                    <Label text="显示名称:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                    <TextField fx:id="itemDisplayNameField" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                        <tooltip><Tooltip text="游戏中显示的名称，支持中文，例如「钻石剑」"/></tooltip>
-                                    </TextField>
-                                    <Label text="最大堆叠:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                    <Spinner fx:id="itemMaxStackSpinner" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                        <tooltip><Tooltip text="一组最多能放多少个，通常为 64，工具/武器/盔甲一般为 1"/></tooltip>
-                                    </Spinner>
-                                    <Label text="类型:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                    <ComboBox fx:id="itemTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                        <tooltip><Tooltip text="普通物品（材料/食物）、工具（镐/斧/锹/锄）、武器（剑）、盔甲（头盔/胸甲/护腿/靴子）"/></tooltip>
-                                    </ComboBox>
-                                    <Label text="纹理图片:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                    <HBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                        <TextField fx:id="itemTexturePathField" HBox.hgrow="ALWAYS">
-                                            <tooltip><Tooltip text="物品图标的图片文件路径，建议 16x16 或 32x32 PNG 格式"/></tooltip>
-                                        </TextField>
-                                        <Button fx:id="selectTextureBtn" text="选择">
-                                            <tooltip><Tooltip text="打开文件选择器选择图片"/></tooltip>
-                                        </Button>
-                                        <ImageView fx:id="texturePreview" fitWidth="32" fitHeight="32" preserveRatio="true"/>
-                                    </HBox>
-                                    <!-- 工具/武器/盔甲属性动态显示 -->
-                                    <Label fx:id="durabilityLabel" text="耐久度:" GridPane.columnIndex="0" GridPane.rowIndex="5" visible="false"/>
-                                    <Spinner fx:id="itemDurabilitySpinner" GridPane.columnIndex="1" GridPane.rowIndex="5" visible="false">
-                                        <tooltip><Tooltip text="物品的耐久度，仅对工具/武器/盔甲有效"/></tooltip>
-                                    </Spinner>
-                                    <Label fx:id="damageLabel" text="攻击伤害:" GridPane.columnIndex="0" GridPane.rowIndex="6" visible="false"/>
-                                    <Spinner fx:id="itemAttackDamageSpinner" GridPane.columnIndex="1" GridPane.rowIndex="6" visible="false">
-                                        <tooltip><Tooltip text="武器或工具的攻击力加成，例如 +7 表示增加7点伤害"/></tooltip>
-                                    </Spinner>
-                                    <Label fx:id="speedLabel" text="攻击速度:" GridPane.columnIndex="0" GridPane.rowIndex="7" visible="false"/>
-                                    <Spinner fx:id="itemAttackSpeedSpinner" GridPane.columnIndex="1" GridPane.rowIndex="7" visible="false">
-                                        <tooltip><Tooltip text="攻击速度，负值表示较慢，正值表示较快，剑通常为 -2.4"/></tooltip>
-                                    </Spinner>
-                                    <Label fx:id="armorLabel" text="盔甲值:" GridPane.columnIndex="0" GridPane.rowIndex="8" visible="false"/>
-                                    <Spinner fx:id="itemArmorValueSpinner" GridPane.columnIndex="1" GridPane.rowIndex="8" visible="false">
-                                        <tooltip><Tooltip text="盔甲提供的护甲值（0-30）"/></tooltip>
-                                    </Spinner>
-                                    <Label fx:id="toughnessLabel" text="盔甲韧性:" GridPane.columnIndex="0" GridPane.rowIndex="9" visible="false"/>
-                                    <Spinner fx:id="itemToughnessSpinner" GridPane.columnIndex="1" GridPane.rowIndex="9" visible="false">
-                                        <tooltip><Tooltip text="盔甲韧性，减少高伤害攻击的伤害"/></tooltip>
-                                    </Spinner>
-                                    <Label fx:id="knockbackLabel" text="击退抗性:" GridPane.columnIndex="0" GridPane.rowIndex="10" visible="false"/>
-                                    <Spinner fx:id="itemKnockbackSpinner" GridPane.columnIndex="1" GridPane.rowIndex="10" visible="false">
-                                        <tooltip><Tooltip text="击退抗性（0-1），1表示完全免疫击退"/></tooltip>
-                                    </Spinner>
-                                    <Label fx:id="toolMaterialLabel" text="工具材料:" GridPane.columnIndex="0" GridPane.rowIndex="11" visible="false"/>
-                                    <ComboBox fx:id="itemToolMaterialCombo" GridPane.columnIndex="1" GridPane.rowIndex="11" visible="false">
-                                        <tooltip><Tooltip text="工具材料，决定挖掘等级和耐久（WOOD/STONE/IRON/GOLD/DIAMOND/NETHERITE）"/></tooltip>
-                                    </ComboBox>
-                                    <Label fx:id="armorMaterialLabel" text="盔甲材料:" GridPane.columnIndex="0" GridPane.rowIndex="12" visible="false"/>
-                                    <ComboBox fx:id="itemArmorMaterialCombo" GridPane.columnIndex="1" GridPane.rowIndex="12" visible="false">
-                                        <tooltip><Tooltip text="盔甲材料，决定护甲值和韧性（LEATHER/CHAIN/IRON/GOLD/DIAMOND/NETHERITE）"/></tooltip>
-                                    </ComboBox>
-                                </GridPane>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 方块编辑器 -->
-                        <Tab fx:id="blockEditorTab" text="方块编辑器" closable="false">
-                            <VBox spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="方块管理" styleClass="wizard-title"/>
-                                <Label text="🧱 示例：添加一个「钢块」，硬度5.0，材质 METAL" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                                <TableView fx:id="blockTableView" prefHeight="200">
-                                    <columns>
-                                        <TableColumn fx:id="blockIdCol" text="方块ID" prefWidth="120"/>
-                                        <TableColumn fx:id="blockNameCol" text="显示名称" prefWidth="150"/>
-                                        <TableColumn fx:id="blockMaterialCol" text="材质" prefWidth="100"/>
-                                        <TableColumn fx:id="blockHardnessCol" text="硬度" prefWidth="80"/>
-                                    </columns>
-                                </TableView>
-                                <HBox spacing="10">
-                                    <Button fx:id="addBlockBtn" text="添加" styleClass="modern-button-primary">
-                                        <tooltip><Tooltip text="将下方填写的方块添加到列表"/></tooltip>
-                                    </Button>
-                                    <Button fx:id="updateBlockBtn" text="更新" styleClass="modern-button-secondary">
-                                        <tooltip><Tooltip text="修改选中的方块属性"/></tooltip>
-                                    </Button>
-                                    <Button fx:id="deleteBlockBtn" text="删除" styleClass="modern-button-danger">
-                                        <tooltip><Tooltip text="删除选中的方块"/></tooltip>
-                                    </Button>
-                                </HBox>
-                                <Separator/>
-                                <GridPane hgap="15" vgap="12">
-                                    <Label text="方块ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                    <TextField fx:id="blockIdField" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                        <tooltip><Tooltip text="方块注册名，只能小写字母数字下划线，例如 steel_block"/></tooltip>
-                                    </TextField>
-                                    <Label text="显示名称:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                    <TextField fx:id="blockDisplayNameField" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                        <tooltip><Tooltip text="游戏中显示的名称，例如「钢块」"/></tooltip>
-                                    </TextField>
-                                    <Label text="材质:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                    <ComboBox fx:id="blockMaterialCombo" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                        <tooltip><Tooltip text="方块的材质类型（决定挖掘等级、声音等），可选 WOOD/STONE/METAL/SAND/GLASS/CLAY/GRASS"/></tooltip>
-                                    </ComboBox>
-                                    <Label text="硬度:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                    <Spinner fx:id="blockHardnessSpinner" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                        <tooltip><Tooltip text="方块被破坏所需时间，数值越大越难破坏（石头约1.5，钻石块约5.0）"/></tooltip>
-                                    </Spinner>
-                                </GridPane>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 配方编辑器（图形化） -->
-                        <Tab fx:id="recipeEditorTab" text="配方编辑器" closable="false">
-                            <SplitPane dividerPositions="0.3">
-                                <items>
-                                    <!-- 左侧物品列表 -->
-                                    <VBox spacing="10" styleClass="card">
-                                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
-                                        <Label text="可用物品/方块" styleClass="card-title"/>
-                                        <TextField fx:id="itemSearchField" promptText="搜索物品..." styleClass="modern-field"/>
-                                        <ListView fx:id="itemListView" VBox.vgrow="ALWAYS"/>
-                                        <Label text="💡 提示：双击物品添加到输出框；拖拽物品ID到网格格子中" style="-fx-text-fill: #7f8c8d; -fx-font-size: 11px;"/>
-                                    </VBox>
-
-                                    <!-- 右侧配方编辑区 -->
-                                    <VBox spacing="15" styleClass="card">
-                                        <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                        <Label text="合成配方管理" styleClass="wizard-title"/>
-                                        <Label text="🔨 示例：制作一个「钻石剑」配方，中间一格放钻石，下面放木棍" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-
-                                        <TableView fx:id="recipeTableView" prefHeight="150">
-                                            <columns>
-                                                <TableColumn fx:id="recipeOutputCol" text="输出物品" prefWidth="180"/>
-                                                <TableColumn fx:id="recipeCountCol" text="数量" prefWidth="80"/>
-                                                <TableColumn fx:id="recipeShapedCol" text="类型" prefWidth="100"/>
-                                            </columns>
-                                        </TableView>
-
-                                        <HBox spacing="10">
-                                            <Button text="添加配方" onAction="#addRecipe" styleClass="modern-button-primary"/>
-                                            <Button text="更新配方" onAction="#updateRecipe" styleClass="modern-button-secondary"/>
-                                            <Button text="删除配方" onAction="#deleteRecipe" styleClass="modern-button-danger"/>
-                                            <Button text="清空网格" onAction="#clearRecipeGrid" styleClass="modern-button-secondary"/>
-                                        </HBox>
-
-                                        <Separator/>
-                                        <VBox fx:id="recipeEditorContainer" spacing="10"/>
-                                    </VBox>
-                                </items>
-                            </SplitPane>
-                        </Tab>
-
-                        <!-- 依赖管理 -->
-                        <Tab fx:id="dependencyTab" text="依赖管理" closable="false">
-                            <VBox spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="模组依赖管理" styleClass="wizard-title"/>
-                                <Label text="🔗 示例：添加依赖模组 JEI（Just Enough Items），版本范围 [10.0.0,)" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                                <TableView fx:id="dependencyTableView" prefHeight="200">
-                                    <columns>
-                                        <TableColumn fx:id="depModIdCol" text="模组ID" prefWidth="150"/>
-                                        <TableColumn fx:id="depMandatoryCol" text="必需" prefWidth="80"/>
-                                        <TableColumn fx:id="depVersionCol" text="版本范围" prefWidth="150"/>
-                                        <TableColumn fx:id="depOrderingCol" text="顺序" prefWidth="80"/>
-                                        <TableColumn fx:id="depSideCol" text="运行端" prefWidth="80"/>
-                                    </columns>
-                                </TableView>
-                                <HBox spacing="10">
-                                    <Button fx:id="addDepBtn" text="添加" styleClass="modern-button-primary">
-                                        <tooltip><Tooltip text="添加依赖模组"/></tooltip>
-                                    </Button>
-                                    <Button fx:id="updateDepBtn" text="更新" styleClass="modern-button-secondary">
-                                        <tooltip><Tooltip text="更新选中的依赖"/></tooltip>
-                                    </Button>
-                                    <Button fx:id="deleteDepBtn" text="删除" styleClass="modern-button-danger">
-                                        <tooltip><Tooltip text="删除选中的依赖"/></tooltip>
-                                    </Button>
-                                </HBox>
-                                <Separator/>
-                                <GridPane hgap="15" vgap="12">
-                                    <Label text="模组ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                                    <TextField fx:id="depModIdField" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                        <tooltip><Tooltip text="依赖模组的ID，例如 jei"/></tooltip>
-                                    </TextField>
-                                    <Label text="必需:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                                    <CheckBox fx:id="depMandatoryCheck" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                        <tooltip><Tooltip text="是否强制要求安装该模组"/></tooltip>
-                                    </CheckBox>
-                                    <Label text="版本范围:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                                    <TextField fx:id="depVersionField" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="例如 [1.0,2.0)">
-                                        <tooltip><Tooltip text="版本范围，如 [1.0,2.0) 表示 1.0 到 2.0 之间的版本"/></tooltip>
-                                    </TextField>
-                                    <Label text="顺序:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                                    <ComboBox fx:id="depOrderingCombo" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                        <tooltip><Tooltip text="加载顺序：NONE（无要求）、BEFORE（在此之前）、AFTER（在此之后）"/></tooltip>
-                                    </ComboBox>
-                                    <Label text="运行端:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                                    <ComboBox fx:id="depSideCombo" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                        <tooltip><Tooltip text="运行端：BOTH（两端）、CLIENT（仅客户端）、SERVER（仅服务端）"/></tooltip>
-                                    </ComboBox>
-                                </GridPane>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 流体编辑器 -->
-                        <Tab fx:id="fluidEditorTab" text="流体编辑器" closable="false">
-                            <VBox fx:id="fluidEditorContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="流体管理" styleClass="wizard-title"/>
-                                <Label text="💧 示例：添加一种「硫酸」，密度1500，粘度2000，发光等级5" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 实体编辑器 -->
-                        <Tab fx:id="entityEditorTab" text="实体编辑器" closable="false">
-                            <VBox fx:id="entityEditorContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="实体管理" styleClass="wizard-title"/>
-                                <Label text="🐉 示例：添加一个「火焰蝙蝠」，生命值20，攻击力4，生成权重10" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 生物群系编辑器 -->
-                        <Tab fx:id="biomeEditorTab" text="生物群系编辑器" closable="false">
-                            <VBox fx:id="biomeEditorContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="生物群系管理" styleClass="wizard-title"/>
-                                <Label text="🌲 示例：创建「樱花林」群系，温度0.8，湿度0.9，水颜色粉色" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 附魔编辑器 -->
-                        <Tab fx:id="enchantmentEditorTab" text="附魔编辑器" closable="false">
-                            <VBox fx:id="enchantmentEditorContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="附魔管理" styleClass="wizard-title"/>
-                                <Label text="✨ 示例：添加「火焰附加」附魔，最大等级5，适用于武器" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 结构编辑器 -->
-                        <Tab fx:id="structureEditorTab" text="结构编辑器" closable="false">
-                            <VBox fx:id="structureEditorContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="结构管理" styleClass="wizard-title"/>
-                                <Label text="🏠 示例：添加「橡树小屋」，生成权重5，生物群系森林" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 锻造配方 -->
-                        <Tab fx:id="smithingTab" text="锻造配方" closable="false">
-                            <VBox fx:id="smithingContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="锻造配方管理" styleClass="wizard-title"/>
-                                <Label text="⚔️ 示例：将钻石剑升级为下界合金剑，模板：下界合金升级模板，添加物：下界合金锭" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 熔炉配方 -->
-                        <Tab fx:id="smeltingTab" text="熔炉配方" closable="false">
-                            <VBox fx:id="smeltingContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="熔炉配方管理" styleClass="wizard-title"/>
-                                <Label text="🔥 示例：铁矿石烧炼成铁锭，经验0.7，时间200刻" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 酿造配方 -->
-                        <Tab fx:id="brewingTab" text="酿造配方" closable="false">
-                            <VBox fx:id="brewingContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="酿造配方管理" styleClass="wizard-title"/>
-                                <Label text="🧪 示例：粗制药水 + 地狱疣 → 粗制药水（基础）" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 维度编辑器 -->
-                        <Tab fx:id="dimensionTab" text="维度编辑器" closable="false">
-                            <VBox fx:id="dimensionContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="维度管理" styleClass="wizard-title"/>
-                                <Label text="🌍 示例：创建「水晶世界」维度，天空光照开启，怪物生成光照等级7" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 进度/成就 -->
-                        <Tab fx:id="advancementTab" text="进度/成就" closable="false">
-                            <VBox fx:id="advancementContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="进度/成就管理" styleClass="wizard-title"/>
-                                <Label text="🏆 示例：获得钻石后触发成就「钻石！」" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 自定义命令 -->
-                        <Tab fx:id="commandTab" text="自定义命令" closable="false">
-                            <VBox fx:id="commandContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="自定义命令管理" styleClass="wizard-title"/>
-                                <Label text="💻 示例：添加命令 /heal，恢复玩家生命值" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 标签编辑器 -->
-                        <Tab fx:id="tagTab" text="标签编辑器" closable="false">
-                            <VBox fx:id="tagContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="标签管理" styleClass="wizard-title"/>
-                                <Label text="🏷️ 示例：创建一个「神秘物品」标签，包含多个物品ID" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 战利品表 -->
-                        <Tab fx:id="lootTableTab" text="战利品表" closable="false">
-                            <VBox fx:id="lootTableContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="战利品表管理" styleClass="wizard-title"/>
-                                <Label text="💎 示例：钻石矿石掉落1-3个钻石，经验值2" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 游戏规则 -->
-                        <Tab fx:id="gameRuleTab" text="游戏规则" closable="false">
-                            <VBox fx:id="gameRuleContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="游戏规则管理" styleClass="wizard-title"/>
-                                <Label text="🎮 示例：添加规则「禁止爆炸破坏地形」，默认 true" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- 世界生成 -->
-                        <Tab fx:id="worldGenTab" text="世界生成" closable="false">
-                            <VBox fx:id="worldGenContainer" spacing="15" styleClass="card">
-                                <padding><Insets top="20" right="25" bottom="20" left="25"/></padding>
-                                <Label text="世界生成配置" styleClass="wizard-title"/>
-                                <Label text="🗺️ 示例：使用自定义噪声设置生成平坦世界" style="-fx-text-fill: #27ae60; -fx-font-size: 12px;"/>
-                            </VBox>
-                        </Tab>
-
-                        <!-- AI 助手 -->
-                        <Tab fx:id="aiChatTab" text="AI 助手" closable="false">
-                            <fx:include source="ai_chat.fxml"/>
-                        </Tab>
-                    </TabPane>
-                </items>
-            </SplitPane>
-        </center>
-
-        <bottom>
-            <HBox styleClass="status-bar">
-                <Label text="就绪" />
-            </HBox>
-        </bottom>
-    </BorderPane>
+                <!-- 流体编辑器 Tab -->
+                <Tab fx:id="fluidEditorTab" text="流体">
+                    <VBox fx:id="fluidEditorContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 实体编辑器 Tab -->
+                <Tab fx:id="entityEditorTab" text="实体">
+                    <VBox fx:id="entityEditorContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 生物群系编辑器 Tab -->
+                <Tab fx:id="biomeEditorTab" text="生物群系">
+                    <VBox fx:id="biomeEditorContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 附魔编辑器 Tab -->
+                <Tab fx:id="enchantmentEditorTab" text="附魔">
+                    <VBox fx:id="enchantmentEditorContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 结构编辑器 Tab -->
+                <Tab fx:id="structureEditorTab" text="结构">
+                    <VBox fx:id="structureEditorContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 锻造配方编辑器 Tab -->
+                <Tab fx:id="smithingTab" text="锻造">
+                    <VBox fx:id="smithingContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 维度编辑器 Tab -->
+                <Tab fx:id="dimensionTab" text="维度">
+                    <VBox fx:id="dimensionContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 熔炉配方编辑器 Tab -->
+                <Tab fx:id="smeltingTab" text="熔炉">
+                    <VBox fx:id="smeltingContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 酿造配方编辑器 Tab -->
+                <Tab fx:id="brewingTab" text="酿造">
+                    <VBox fx:id="brewingContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 进度编辑器 Tab -->
+                <Tab fx:id="advancementTab" text="进度">
+                    <VBox fx:id="advancementContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 命令编辑器 Tab -->
+                <Tab fx:id="commandTab" text="命令">
+                    <VBox fx:id="commandContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 标签编辑器 Tab -->
+                <Tab fx:id="tagTab" text="标签">
+                    <VBox fx:id="tagContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 战利品表编辑器 Tab -->
+                <Tab fx:id="lootTableTab" text="战利品表">
+                    <VBox fx:id="lootTableContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 游戏规则编辑器 Tab -->
+                <Tab fx:id="gameRuleTab" text="游戏规则">
+                    <VBox fx:id="gameRuleContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+                <!-- 世界生成编辑器 Tab -->
+                <Tab fx:id="worldGenTab" text="世界生成">
+                    <VBox fx:id="worldGenContainer" VBox.vgrow="ALWAYS"/>
+                </Tab>
+            </TabPane>
+        </SplitPane>
+    </VBox>
 </StackPane>

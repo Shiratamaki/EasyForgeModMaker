@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.easyforge'
-version = '1.0b'
+version = '1.0.0'
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/public' }
@@ -40,16 +40,21 @@ processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
+// 打包 Fat JAR（排除签名文件）
 task fatJar(type: Jar) {
     manifest {
         attributes 'Main-Class': application.mainClass
     }
     archiveBaseName = project.name + '-all'
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
     with jar
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+// 创建自定义 JRE 镜像（包含更多模块和绑定服务）
 task jlinkRuntime(type: Exec) {
     group = 'distribution'
     description = '创建最小化 JRE 镜像'
@@ -65,7 +70,8 @@ task jlinkRuntime(type: Exec) {
         delete runtimeDir
         commandLine 'jlink',
                 '--module-path', jmodsPath,
-                '--add-modules', 'java.base,java.logging,java.xml,java.sql,java.desktop,java.naming,jdk.unsupported,javafx.controls,javafx.fxml,javafx.swing',
+                '--add-modules', 'java.base,java.logging,java.xml,java.sql,java.desktop,java.naming,jdk.unsupported,jdk.crypto.ec,javafx.controls,javafx.fxml,javafx.swing',
+                '--bind-services',
                 '--strip-debug',
                 '--no-man-pages',
                 '--no-header-files',
@@ -74,13 +80,13 @@ task jlinkRuntime(type: Exec) {
     }
 }
 
+// 使用 jpackage 生成原生安装包 (exe)
 task jpackageApp(type: Exec) {
     group = 'distribution'
     description = '生成原生安装包 (exe)'
     dependsOn jlinkRuntime
 
     def jarFile = tasks.fatJar.archiveFile.get().asFile
-    // 强制输出为 exe，不区分平台（在 Windows 上生成 .exe）
     def outputType = 'exe'
     def iconFile = file('src/main/resources/icons/icon.ico')
 
@@ -96,6 +102,9 @@ task jpackageApp(type: Exec) {
     def jpackageArgs = [
             'jpackage',
             '--type', outputType,
+            '--win-console',                      // 显示控制台窗口，便于调试
+            '--win-per-user-install',             // 安装到当前用户（避免管理员权限）
+            '--win-dir-chooser',                  // 允许用户选择安装目录
             '--name', 'EasyForgeModMaker',
             '--app-version', project.version,
             '--vendor', 'EasyForge',
@@ -103,7 +112,7 @@ task jpackageApp(type: Exec) {
             '--copyright', 'EasyForge',
             '--input', jarFile.parent,
             '--main-jar', jarFile.name,
-            '--main-class', application.mainClass,
+            '--main-class', 'com.easyforge.EasyForgeApp',
             '--dest', "${buildDir}/dist",
             '--runtime-image', "${buildDir}/runtime",
             '--java-options', '--enable-preview',
