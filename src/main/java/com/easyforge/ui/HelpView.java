@@ -35,7 +35,6 @@ public class HelpView {
 
         BorderPane root = new BorderPane();
 
-        // 顶部工具栏
         HBox toolbar = new HBox(12);
         toolbar.setPadding(new Insets(12, 15, 12, 15));
         toolbar.setAlignment(Pos.CENTER_LEFT);
@@ -58,20 +57,12 @@ public class HelpView {
 
         toolbar.getChildren().addAll(homeBtn, gettingStartedBtn, editorsBtn, faqBtn, shortcutsBtn);
 
-        // 中间 WebView
         webView = new WebView();
         webEngine = webView.getEngine();
-        // 设置用户样式表（修正方法）
-        String cssUrl = getClass().getResource("/css/help.css") != null ?
-                getClass().getResource("/css/help.css").toExternalForm() : null;
-        if (cssUrl != null) {
-            webEngine.setUserStyleSheetLocation(cssUrl);
-        }
 
         root.setTop(toolbar);
         root.setCenter(webView);
 
-        // 底部状态栏
         Label statusLabel = new Label(I18n.get("help.status"));
         statusLabel.setPadding(new Insets(6, 12, 6, 12));
         statusLabel.setStyle("-fx-font-size: 11px; -fx-text-fill: #666; -fx-background-color: #f8f8f8; -fx-border-color: #e0e0e0; -fx-border-width: 1 0 0 0;");

@@ -53,16 +53,13 @@ public class EasyForgeApp extends Application {
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setTitle("EasyForge Mod Maker");
-
-            // 设置窗口初始大小，并允许用户调整
             primaryStage.setWidth(1200);
             primaryStage.setHeight(800);
             primaryStage.setMinWidth(900);
             primaryStage.setMinHeight(600);
 
-            // 设置窗口图标
-            try {
-                InputStream iconStream = getClass().getResourceAsStream("/icons/icon.png");
+            // 使用 getResourceAsStream 加载窗口图标
+            try (InputStream iconStream = getClass().getResourceAsStream("/icons/icon.png")) {
                 if (iconStream != null) {
                     Image icon = new Image(iconStream);
                     primaryStage.getIcons().add(icon);
